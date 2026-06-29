@@ -16,6 +16,7 @@ export interface Transaction {
   reference?: string;
   paymentMethod?: PaymentMethod;
   counterpartyPhone?: string;
+  fees?: number;
   createdAt: string;
 }
 
