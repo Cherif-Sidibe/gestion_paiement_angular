@@ -9,7 +9,30 @@ export const AGENT_ROUTES: Routes = [
       {
         path: 'wallets',
         loadComponent: () =>
-          import('../wallets/wallets.component').then((c) => c.WalletsComponent),
+          import('../wallets-list/wallets-list.component').then(
+            (c) => c.WalletsListComponent,
+          ),
+      },
+      {
+        path: 'search',
+        loadComponent: () =>
+          import('../wallet-search/wallet-search.component').then(
+            (c) => c.WalletSearchComponent,
+          ),
+      },
+      {
+        path: 'deposit',
+        loadComponent: () =>
+          import('../agent-deposit/agent-deposit.component').then(
+            (c) => c.AgentDepositComponent,
+          ),
+      },
+      {
+        path: 'withdraw',
+        loadComponent: () =>
+          import('../agent-withdraw/agent-withdraw.component').then(
+            (c) => c.AgentWithdrawComponent,
+          ),
       },
       {
         path: '',

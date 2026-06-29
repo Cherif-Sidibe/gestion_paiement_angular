@@ -36,14 +36,14 @@ export class WalletApiService implements WalletApiServiceInterface {
 
   getWalletByPhone(phone: string): Observable<Wallet> {
     return this.http
-      .get<RestResponse<Wallet>>(`${this.BASE}/phone/${this.encodePhone(phone)}`)
+      .get<RestResponse<Wallet>>(`${this.BASE}/${this.encodePhone(phone)}`)
       .pipe(map((res) => res.body));
   }
 
   getBalance(phone: string): Observable<number> {
     return this.http
       .get<RestResponse<number>>(
-        `${this.BASE}/phone/${this.encodePhone(phone)}/balance`,
+        `${this.BASE}/${this.encodePhone(phone)}/balance`,
       )
       .pipe(map((res) => res.body));
   }
