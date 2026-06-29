@@ -1,0 +1,45 @@
+<div class="entry-wrapper d-flex align-items-center justify-content-center">
+  <div class="card shadow-sm entry-card">
+    <div class="card-body p-4">
+      <h1 class="h4 text-center mb-1">
+        <i class="bi bi-wallet2 text-primary"></i> BadWallet
+      </h1>
+      <p class="text-center text-muted mb-4">Web Dashboard</p>
+
+      <div class="d-grid mb-4">
+        <button class="btn btn-dark btn-lg" type="button" (click)="enterAsAgent()">
+          <i class="bi bi-person-badge"></i> Espace Agent
+        </button>
+      </div>
+
+      <div class="text-center text-muted mb-3">
+        <small>— ou accès Client —</small>
+      </div>
+
+      <form #form="ngForm" (ngSubmit)="enterAsClient(form)" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="phoneNumber">Numéro de téléphone</label>
+          <input
+            id="phoneNumber"
+            name="phoneNumber"
+            type="tel"
+            class="form-control"
+            placeholder="+221 77 123 45 67"
+            [(ngModel)]="phoneNumber"
+            required
+          />
+        </div>
+
+        @if (errorMessage) {
+          <div class="alert alert-danger py-2">{{ errorMessage }}</div>
+        }
+
+        <div class="d-grid">
+          <button class="btn btn-primary btn-lg" type="submit">
+            <i class="bi bi-box-arrow-in-right"></i> Espace Client
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

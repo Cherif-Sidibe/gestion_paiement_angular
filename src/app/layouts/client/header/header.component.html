@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/dashboard">
+      <i class="bi bi-wallet2"></i> BadWallet
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#clientNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="clientNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/dashboard">
+            <i class="bi bi-speedometer2"></i> Tableau de bord
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/transactions"
+          >
+            <i class="bi bi-list-ul"></i> Transactions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/transfer">
+            <i class="bi bi-arrow-left-right"></i> Transfert
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/bills">
+            <i class="bi bi-receipt"></i> Factures
+          </a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center">
+        @if (currentPhone()) {
+          <span class="text-light me-3">
+            <i class="bi bi-person-circle"></i> {{ currentPhone() | phone }}
+          </span>
+        }
+        <button class="btn btn-outline-light" type="button" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i> Déconnexion
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,9 @@
+.entry-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.entry-card {
+  width: 100%;
+  max-width: 380px;
+}
