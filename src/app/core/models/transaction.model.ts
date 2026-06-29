@@ -31,7 +31,7 @@ export interface WithdrawRequest {
 }
 
 export interface TransferRequest {
-  sourcePhone: string;
-  targetPhone: string;
+  senderPhone: string;
+  receiverPhone: string;
   amount: number;
 }
