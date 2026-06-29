@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '@env/environment';
 import {
   PageResponse,
@@ -10,9 +10,18 @@ import { Wallet, WalletCreateRequest } from '@core/models/wallet.model';
 import {
   DepositRequest,
   Transaction,
+  TransferRequest,
   WithdrawRequest,
 } from '@core/models/transaction.model';
+import { SKIP_ERROR_TOAST } from '@core/interceptors/error.interceptor';
 import { WalletApiServiceInterface } from './interfaces/wallet-api.interface';
+
+interface BalanceBody {
+  code: string;
+  phoneNumber: string;
+  balance: number;
+  currency: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -36,16 +45,35 @@ export class WalletApiService implements WalletApiServiceInterface {
 
   getWalletByPhone(phone: string): Observable<Wallet> {
     return this.http
-      .get<RestResponse<Wallet>>(`${this.BASE}/phone/${this.encodePhone(phone)}`)
+      .get<RestResponse<Wallet>>(`${this.BASE}/${this.encodePhone(phone)}`)
       .pipe(map((res) => res.body));
+  }
+
+  walletExists(phone: string): Observable<boolean> {
+    return this.http
+      .get<RestResponse<Wallet>>(`${this.BASE}/${this.encodePhone(phone)}`, {
+        context: new HttpContext().set(SKIP_ERROR_TOAST, true),
+      })
+      .pipe(
+        map(() => true),
+        catchError(() => of(false)),
+      );
   }
 
   getBalance(phone: string): Observable<number> {
     return this.http
-      .get<RestResponse<number>>(
-        `${this.BASE}/phone/${this.encodePhone(phone)}/balance`,
+      .get<RestResponse<BalanceBody>>(
+        `${this.BASE}/${this.encodePhone(phone)}/balance`,
       )
-      .pipe(map((res) => res.body));
+      .pipe(map((res) => res.body?.balance ?? 0));
+  }
+
+  getTransactions(phone: string): Observable<Transaction[]> {
+    return this.http
+      .get<RestResponse<Transaction[]>>(
+        `${this.BASE}/${this.encodePhone(phone)}/transactions`,
+      )
+      .pipe(map((res) => res.body ?? []));
   }
 
   deposit(walletId: string, req: DepositRequest): Observable<Transaction> {
@@ -57,6 +85,12 @@ export class WalletApiService implements WalletApiServiceInterface {
   withdraw(req: WithdrawRequest): Observable<Transaction> {
     return this.http
       .post<RestResponse<Transaction>>(`${this.BASE}/withdraw`, req)
+      .pipe(map((res) => res.body));
+  }
+
+  transfer(req: TransferRequest): Observable<Transaction> {
+    return this.http
+      .post<RestResponse<Transaction>>(`${this.BASE}/transfer`, req)
       .pipe(map((res) => res.body));
   }
 

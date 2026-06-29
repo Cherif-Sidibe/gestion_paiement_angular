@@ -11,6 +11,7 @@ export interface Wallet {
 export interface WalletCreateRequest {
   phoneNumber: string;
   email: string;
+  initialBalance: number;
+  code: string;
   currency: string;
-  balance?: number;
 }
