@@ -65,6 +65,26 @@ import { WalletCreateComponent } from '@features/agent/wallet-create/wallet-crea
             </table>
           </div>
 
+          <div
+            class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3"
+          >
+            <span class="text-muted small">
+              {{ page.totalElements }} wallet(s) au total
+            </span>
+            <div class="d-flex align-items-center gap-2">
+              <label class="text-muted small mb-0" for="pageSize">Par page</label>
+              <select
+                id="pageSize"
+                class="form-select form-select-sm w-auto"
+                (change)="onSizeChange($event)"
+              >
+                @for (s of pageSizes; track s) {
+                  <option [value]="s" [selected]="s === size">{{ s }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
           @if (page.totalPages > 1) {
             <app-pagination
               [pages]="pages"
@@ -72,10 +92,6 @@ import { WalletCreateComponent } from '@features/agent/wallet-create/wallet-crea
               (pageChange)="onPageChange($event)"
             />
           }
-
-          <p class="text-muted small text-center mt-3 mb-0">
-            {{ page.totalElements }} wallet(s) au total
-          </p>
         }
       </div>
     </div>
@@ -84,7 +100,8 @@ import { WalletCreateComponent } from '@features/agent/wallet-create/wallet-crea
 export class WalletsListComponent implements OnInit {
   page?: PageResponse<Wallet>;
   pageIndex = 0;
-  readonly size = 10;
+  size = 10;
+  readonly pageSizes = [5, 10, 20];
   loading = false;
   showCreate = false;
 
@@ -117,6 +134,12 @@ export class WalletsListComponent implements OnInit {
 
   onPageChange(page: number): void {
     this.pageIndex = page - 1;
+    this.load();
+  }
+
+  onSizeChange(event: Event): void {
+    this.size = Number((event.target as HTMLSelectElement).value);
+    this.pageIndex = 0;
     this.load();
   }
 
